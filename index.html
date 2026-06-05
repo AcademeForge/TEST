@@ -6401,39 +6401,32 @@ function afHandleSwipe(e) {
     window.afShowComingSoon = afShowComingSoon;
     window.afCloseModal     = afCloseModal;
 
-    /* ─────────────────────────────────────────────────────────────
-       SECTION 11: FOLDER-BASED NAVIGATION HELPERS
-    ─────────────────────────────────────────────────────────────── */
-    const AF_ROUTES = {
-      'af-test-arena':            '/af-test-arena/',
-      'latest-test-review':       '/latest-test-review/',
-      'account':                  '/Remake/account/',
-      'revision-notes':           '/revision-notes/',
-      'sudoku-master':            '/Remake/sudoku-master/',
-      'learning-heatmap':         '/learning-heatmap/',
-      'certificate-verification': '/certificate-verification/',
-      'notifications':            '/notifications/',
-      'support':                  '/support/',
-      'contact-status':           '/contact-status/',
-      'bug-report':               '/bug-report/',
-      'bug-status':               '/bug-status/',
-      'about':                    '/about/',
-      'language':                 '/language/',
-      'batches':                  '/batches/',
-      'community':                '/community/',
-    };
+   /* ─────────────────────────────────────────────────────────────
+   VIEW SWITCHING SYSTEM
+────────────────────────────────────────────────────────────── */
 
-    function afNavigate(routeKey) {
-      var path = AF_ROUTES[routeKey];
-      if (path) {
-        window.location.href = path;
-      } else {
-        afShowComingSoon('Coming Soon', 'The "' + routeKey + '" page is being built. Check back soon!');
-      }
-    }
+function afSwitchView(viewName) {
 
-    window.afNavigate = afNavigate;
+  // Sabhi views hide karo
+  document.querySelectorAll('.af-view').forEach(view => {
+    view.style.display = 'none';
+  });
 
+  // Target view id banao
+  const targetId =
+    'view' + viewName.charAt(0).toUpperCase() + viewName.slice(1);
+
+  const targetView = document.getElementById(targetId);
+
+  if (targetView) {
+    targetView.style.display = 'block';
+    window.scrollTo(0, 0);
+  } else {
+    console.error('View not found:', targetId);
+  }
+}
+
+window.afSwitchView = afSwitchView;
     /* ─────────────────────────────────────────────────────────────
        SECTION 12: KEYBOARD & ACCESSIBILITY
     ─────────────────────────────────────────────────────────────── */

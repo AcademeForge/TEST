@@ -4701,124 +4701,1070 @@ body{
   display:none !important;
 }
 
- /* ═══════════════════════════════════════════════════════════════
-   SECTION SLIDE-UP SYSTEM — ChatGPT style, neeche se upar
-   ═══════════════════════════════════════════════════════════════ */
- 
-/* ── Base: all sections hidden by default ── */
-.section {
+ /* ══════════════════════════════════════════════════════
+   SETTINGS SECTION OVERLAY SYSTEM
+   Single unified system — replaces all prior section
+   slide/show logic for Settings-related pages.
+══════════════════════════════════════════════════════ */
+
+.af-settings-section {
   position: fixed;
   inset: 0;
-  z-index: 200;
+  z-index: 300;
   background: var(--bg-base);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
- 
-  /* Start state: neeche chhupi hui */
+  padding-bottom: calc(var(--nav-h) + 24px + env(safe-area-inset-bottom, 0px));
+
   transform: translateY(100%);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
- 
-  /* Transition: fast, spring feel, lag nahi */
+
   transition:
     transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
     opacity   220ms cubic-bezier(0.32, 0.72, 0, 1),
     visibility 0ms linear 320ms;
- 
+
   will-change: transform, opacity;
 }
- 
-/* ── Active: section upar aa jaaye ── */
-.section.active {
+
+.af-settings-section.af-settings-section-open {
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
- 
+
   transition:
     transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
     opacity   240ms cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0ms linear 0ms;
 }
- 
-/* ── Leaving: wapas neeche jaaye ── */
-.section.leaving {
-  transform: translateY(100%);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
- 
-  transition:
-    transform 280ms cubic-bezier(0.32, 0.72, 0, 1),
-    opacity   200ms cubic-bezier(0.32, 0.72, 0, 1),
-    visibility 0ms linear 280ms;
+
+/* ── GENERIC SECTION PAGE LAYOUT ── */
+
+.af-settings-section-page {
+  padding: 16px 16px calc(var(--nav-h) + 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
 }
- 
-/* ═══════════════════════════════════════════════════════════════
-   SPECIFIC SECTION SCROLL CONTAINERS
-   ═══════════════════════════════════════════════════════════════ */
- 
-/* Contact Request Status */
-.contact-request-status-section-af,
-.request-status-section-af,
-.contact-us-af-section,
-.learning-heatmap-section {
-  padding-bottom: calc(var(--nav-h) + 16px);
+
+.af-settings-section-back {
+  align-self: flex-start;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--af-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast);
 }
- 
-/* ═══════════════════════════════════════════════════════════════
-   LANGUAGE MODAL — Alag hai, overlay ke saath
-   ═══════════════════════════════════════════════════════════════ */
- 
+
+.af-settings-section-back:active { transform: scale(0.96); }
+
+.af-settings-section-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 16px 8px;
+  text-align: center;
+}
+
+.af-settings-section-hero-icon {
+  font-size: 48px;
+}
+
+.af-settings-section-hero h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.af-settings-section-hero p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.af-settings-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.af-settings-section-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 32px 16px;
+  text-align: center;
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+}
+
+.af-settings-section-empty-icon {
+  font-size: 44px;
+}
+
+.af-settings-section-empty p {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.af-settings-section-empty small {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── LEARNING HEATMAP BACK BUTTON ── */
+
+.learning-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--af-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 16px 16px 0;
+  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast);
+}
+
+.learning-back-btn:active { transform: scale(0.96); }
+
+/* ── CONTACT BACK BUTTON ── */
+
+.contact-back-btn-af {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--af-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin: 16px 16px 0;
+  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast);
+}
+
+.contact-back-btn-af:active { transform: scale(0.96); }
+
+/* ── REQUEST STATUS BACK BUTTON ── */
+
+.request-status-back-af {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  border-radius: var(--r-md);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--af-primary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast);
+}
+
+.request-status-back-af:active { transform: scale(0.96); }
+
+/* ── REQUEST STATUS HERO ── */
+
+.request-status-page-af {
+  padding: 16px 16px calc(var(--nav-h) + 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+}
+
+.request-status-hero-af {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.request-status-hero-text-af {
+  flex: 1;
+  min-width: 0;
+}
+
+.request-status-hero-text-af p {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 2px;
+}
+
+.request-status-hero-text-af h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+  line-height: 1.2;
+}
+
+.request-status-hero-text-af span {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.request-status-refresh-af {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-md);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.request-status-refresh-af:active { transform: rotate(180deg) scale(0.95); }
+
+.request-status-message-af {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 10px 0;
+}
+
+.request-status-message-af.is-error {
+  color: var(--af-danger);
+  background: rgba(239, 68, 68, 0.07);
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.request-status-message-af.is-empty {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 14px;
+}
+
+.request-status-list-af {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── CONTACT US PAGE ── */
+
+.contact-us-af-page {
+  padding: 0 0 calc(var(--nav-h) + 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-height: 100%;
+}
+
+.contact-us-af-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-us-af-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+}
+
+.contact-us-af-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.contact-us-af-head .contact-us-af-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 4px;
+}
+
+.contact-us-af-head h2 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+
+.contact-us-af-head p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.contact-us-af-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-field-af {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contact-field-af label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.contact-field-af input,
+.contact-field-af select,
+.contact-field-af textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: var(--r-md);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+
+.contact-field-af input:focus,
+.contact-field-af select:focus,
+.contact-field-af textarea:focus {
+  border-color: var(--af-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.10);
+}
+
+.contact-field-af textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contact-message-af {
+  font-size: 13px;
+  font-weight: 700;
+  min-height: 18px;
+  border-radius: var(--r-sm);
+  transition: all var(--dur-fast);
+}
+
+.contact-message-af.success {
+  color: var(--af-success);
+  background: rgba(34, 197, 94, 0.08);
+  padding: 10px 12px;
+  border: 1px solid rgba(34, 197, 94, 0.18);
+}
+
+.contact-message-af.error {
+  color: var(--af-danger);
+  background: rgba(239, 68, 68, 0.08);
+  padding: 10px 12px;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.contact-submit-btn-af {
+  padding: 14px;
+  border-radius: var(--r-lg);
+  border: none;
+  background: linear-gradient(135deg, var(--af-primary), var(--af-primary-dark, #3730a3));
+  color: white;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: transform var(--dur-fast) var(--ease-spring), opacity var(--dur-fast);
+}
+
+.contact-submit-btn-af:active { transform: scale(0.97); }
+.contact-submit-btn-af:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── LEARNING HEATMAP INNER ── */
+
+.learning-heatmap-page {
+  padding: 0 16px calc(var(--nav-h) + 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+}
+
+.learning-heatmap-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+}
+
+.learning-heatmap-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 4px;
+}
+
+.learning-heatmap-hero h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.learning-heatmap-hero p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 200px;
+}
+
+.learning-streak-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(239, 68, 68, 0.08));
+  border: 1px solid rgba(245, 158, 11, 0.22);
+}
+
+.learning-streak-fire { font-size: 22px; }
+
+.learning-streak-card strong {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--af-accent2);
+  line-height: 1;
+}
+
+.learning-streak-card small {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.learning-week-card {
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  overflow: hidden;
+}
+
+.learning-week-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.learning-week-card-top h3 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 2px;
+}
+
+.learning-week-card-top p {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.learning-refresh-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-sm);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.learning-refresh-btn:active { transform: rotate(180deg); }
+
+.learning-week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  padding: 14px;
+}
+
+.learning-day-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  border-radius: var(--r-sm);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+}
+
+.learning-day-box span {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.learning-day-box strong {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.learning-day-box.active {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(245, 158, 11, 0.10));
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.learning-day-box.active strong {
+  color: var(--af-accent2);
+}
+
+.learning-info-card {
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  padding: 16px;
+}
+
+.learning-info-card h3 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+}
+
+.learning-info-card ul {
+  list-style: disc;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.learning-info-card li {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  font-weight: 600;
+}
+
+/* ── TEST REVIEW CARD ── */
+
+.af-test-empty-card-v1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 32px 16px;
+  text-align: center;
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+}
+
+.af-test-empty-icon-v1 { font-size: 44px; }
+
+.af-test-empty-card-v1 h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.af-test-empty-card-v1 p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── REQUEST CARD FLIP SYSTEM ── */
+
+.request-card-af {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  perspective: 1200px;
+  cursor: pointer;
+  animation: afCardIn 0.4s var(--ease-out) both;
+}
+
+@keyframes afCardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.request-flip-inner-af {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.request-flip-card-af.is-flipped .request-flip-inner-af {
+  transform: rotateY(180deg);
+}
+
+.request-flip-face-af {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.request-flip-back-af {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.request-card-top-af {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.request-card-title-af { flex: 1; min-width: 0; }
+
+.request-card-kicker-af {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 5px;
+}
+
+.request-card-kicker-af span {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: var(--bg-group);
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border-subtle);
+}
+
+.request-card-title-af h3 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+
+.request-front-summary-af {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0 0 6px;
+}
+
+.request-date-af {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+.request-status-pill-af {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 10px;
+  border-radius: var(--r-full);
+  white-space: nowrap;
+}
+
+.request-status-pill-af.pending {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  color: var(--af-accent2);
+}
+
+.request-status-pill-af.read {
+  background: rgba(59, 130, 246, 0.10);
+  border: 1px solid rgba(59, 130, 246, 0.20);
+  color: #3b82f6;
+}
+
+.request-status-pill-af.solved {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  color: var(--af-success);
+}
+
+.request-progress-af {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-group);
+}
+
+.request-step-af {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.request-step-af:last-child { border-bottom: none; }
+
+.request-step-dot-af {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.request-step-af.is-done .request-step-dot-af {
+  background: rgba(34, 197, 94, 0.18);
+  color: var(--af-success);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+}
+
+.request-step-af.is-pending .request-step-dot-af {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--af-accent2);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+}
+
+.request-step-content-af strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1px;
+}
+
+.request-step-content-af span {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.request-flip-hint-af {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.request-flip-hint-back-af { margin-top: 0; }
+
+/* Back face layout */
+
+.request-back-head-af {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.request-back-head-af span {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.request-back-head-af h3 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.request-back-close-af {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--af-primary);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.request-back-scroll-af {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 420px;
+}
+
+.request-back-block-af strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.request-back-block-af p {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.request-back-grid-af {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.request-back-note-af {
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  background: rgba(245, 158, 11, 0.07);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+/* ── LANGUAGE MODAL ── */
+
 .af-lang-overlay {
   position: fixed;
   inset: 0;
   z-index: 500;
   background: var(--bg-overlay);
- 
   display: flex;
   align-items: flex-end;
   justify-content: center;
- 
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
- 
   transition:
     opacity   280ms cubic-bezier(0.32, 0.72, 0, 1),
     visibility 0ms linear 280ms;
 }
- 
-.af-lang-overlay.open {
+
+.af-lang-overlay.active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
- 
   transition:
     opacity   320ms cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0ms linear 0ms;
 }
- 
+
 .af-lang-modal {
   width: 100%;
   max-width: var(--shell-max);
   background: var(--bg-card-solid);
   border-radius: var(--r-xl) var(--r-xl) 0 0;
-  padding: 12px 20px 32px;
+  padding: 12px 20px calc(32px + env(safe-area-inset-bottom, 0px));
   box-shadow: var(--shadow-elevated);
- 
   transform: translateY(100%);
   transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
- 
-.af-lang-overlay.open .af-lang-modal {
+
+.af-lang-overlay.active .af-lang-modal {
   transform: translateY(0);
 }
-    
+
+.af-lang-drag-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border-input);
+  border-radius: 99px;
+  margin: 0 auto 14px;
+}
+
+.af-lang-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.af-lang-kicker {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 0 3px;
+}
+
+.af-lang-heading {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.af-lang-close {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.af-lang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.af-lang-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border-radius: var(--r-md);
+  background: var(--bg-group);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  text-align: center;
+  transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast), border-color var(--dur-fast);
+}
+
+.af-lang-option:active { transform: scale(0.97); }
+
+.af-lang-option.active {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.10), rgba(6, 182, 212, 0.07));
+  border-color: var(--af-primary);
+}
+
+.af-lang-option-icon { font-size: 20px; }
+
+.af-lang-option-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.af-lang-option-meta {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.af-lang-status {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.af-lang-status.loading { color: var(--af-primary); }
+.af-lang-status.error   { color: var(--af-danger); }
+.af-lang-status.success { color: var(--af-success); }
   </style>
 </head>
 
@@ -5467,7 +6413,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="showSection('testArena'); return false;" aria-label="Open AF Test Arena">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('testArena'); return false;" aria-label="Open AF Test Arena">
             <div class="af-accordion-item-icon" aria-hidden="true">🧪</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">AF Test Arena</div>
@@ -5475,7 +6421,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="showSection('afReviewPageV1'); return false;" aria-label="Open Latest Test Review">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('afReviewPageV1'); return false;" aria-label="Open Latest Test Review">
             <div class="af-accordion-item-icon" aria-hidden="true">📖</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Latest Test Review</div>
@@ -5496,10 +6442,10 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a
+          
             class="af-accordion-item"
             href="#"
-            onclick="showSection('student'); return false;"
+            onclick="afSwitchMainView('student'); return false;"
             aria-label="Login or Create Student ID"
           >
             <div class="af-accordion-item-icon" aria-hidden="true">📋</div>
@@ -5538,7 +6484,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="showSection('learningHeatmap'); return false;" aria-label="Open Learning Heatmap">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('learningHeatmap'); return false;" aria-label="Open Learning Heatmap">
             <div class="af-accordion-item-icon" aria-hidden="true">🔥</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Learning Heatmap</div>
@@ -5580,7 +6526,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="showSection('notifications'); return false;" aria-label="View Notifications">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('notifications'); return false;" aria-label="View Notifications">
             <div class="af-accordion-item-icon" aria-hidden="true">🔔</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Notifications</div>
@@ -5601,7 +6547,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="showSection('contactUsAf'); return false;" aria-label="Contact Us">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('contactUsAf'); return false;" aria-label="Contact Us">
             <div class="af-accordion-item-icon" aria-hidden="true">☎</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Contact Us</div>
@@ -5609,7 +6555,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="showSection('contactRequestStatusAf'); return false;" aria-label="Contact Request Status">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('contactRequestStatusAf'); return false;" aria-label="Contact Request Status">
             <div class="af-accordion-item-icon" aria-hidden="true">📞</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Contact Request Status</div>
@@ -5630,7 +6576,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="showSection('bugReport'); return false;" aria-label="Report a Bug">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('bugReport'); return false;" aria-label="Report a Bug">
             <div class="af-accordion-item-icon" aria-hidden="true">🐞</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Report a Bug</div>
@@ -5638,7 +6584,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="showSection('requestStatusAf'); return false;" aria-label="Bug Report Status">
+          <a class="af-accordion-item" href="#" onclick="afSettingsOpen('requestStatusAf'); return false;" aria-label="Bug Report Status">
             <div class="af-accordion-item-icon" aria-hidden="true">📌</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Bug Report Status</div>
@@ -5711,78 +6657,246 @@ body{
   </div>
 </div><!-- /viewSettings -->
 
-<!-- ==============================
-     CONTACT REQUEST STATUS PAGE - AF
-================================ -->
 
-<section
-  id="contactRequestStatusAf"
-  class="section request-status-section-af contact-request-status-section-af"
-  aria-label="Contact Request Status"
->
+<!-- ══════════════════════════════════════════════════════
+     SETTINGS OVERLAY SECTIONS
+     These sit inside .af-page, overlaid via position:fixed
+══════════════════════════════════════════════════════ -->
+
+<!-- LEARNING HEATMAP -->
+<section id="learningHeatmap" class="af-settings-section" aria-label="Learning Heatmap">
+  <div class="learning-heatmap-page">
+    <button type="button" class="learning-back-btn" onclick="afSettingsClose('learningHeatmap')" aria-label="Back to settings">
+      <span aria-hidden="true">←</span>
+      <span>Back to Settings</span>
+    </button>
+    <div class="learning-heatmap-hero">
+      <div>
+        <p class="learning-heatmap-kicker">Weekly Online Activity</p>
+        <h2>Learning Heatmap</h2>
+        <p>Login daily and stay active to maintain your learning streak.</p>
+      </div>
+      <div class="learning-streak-card">
+        <span class="learning-streak-fire" aria-hidden="true">🔥</span>
+        <strong id="learningHeatmapStreakCount">0</strong>
+        <small>Day Streak</small>
+      </div>
+    </div>
+    <div class="learning-week-card">
+      <div class="learning-week-card-top">
+        <div>
+          <h3>This Week</h3>
+          <p id="learningHeatmapStatus">Checking activity...</p>
+        </div>
+        <button type="button" class="learning-refresh-btn" onclick="loadLearningHeatmap()" aria-label="Refresh learning heatmap">↻</button>
+      </div>
+      <div class="learning-week-grid" id="learningWeekGrid">
+        <div class="learning-day-box"><span>Mon</span><strong>-</strong></div>
+        <div class="learning-day-box"><span>Tue</span><strong>-</strong></div>
+        <div class="learning-day-box"><span>Wed</span><strong>-</strong></div>
+        <div class="learning-day-box"><span>Thu</span><strong>-</strong></div>
+        <div class="learning-day-box"><span>Fri</span><strong>-</strong></div>
+        <div class="learning-day-box"><span>Sat</span><strong>-</strong></div>
+        <div class="learning-day-box"><span>Sun</span><strong>-</strong></div>
+      </div>
+    </div>
+    <div class="learning-info-card">
+      <h3>How streak works</h3>
+      <ul>
+        <li>Login daily to keep your learning streak active.</li>
+        <li>Daily activity automatically marks your day as active.</li>
+        <li>Continuous daily learning increases your streak count.</li>
+        <li>If a day is missed, the streak starts again from zero.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- NOTIFICATIONS -->
+<section id="notifications" class="af-settings-section" aria-label="Notifications">
+  <div class="af-settings-section-page">
+    <button type="button" class="af-settings-section-back" onclick="afSettingsClose('notifications')" aria-label="Back to settings">← Back</button>
+    <div class="af-settings-section-hero">
+      <div class="af-settings-section-hero-icon">🔔</div>
+      <h2>Notifications</h2>
+      <p>Lectures, batches &amp; announcements from AcademeForge.</p>
+    </div>
+    <div id="notificationsContent" class="af-settings-section-body">
+      <div class="af-settings-section-empty">
+        <div class="af-settings-section-empty-icon">🔔</div>
+        <p>No new notifications at this time.</p>
+        <small>Check back later for updates on your batches and lectures.</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT US -->
+<section id="contactUsAf" class="af-settings-section" aria-label="Contact Us">
+  <div class="contact-us-af-page">
+    <button type="button" class="contact-back-btn-af" onclick="afSettingsClose('contactUsAf')" aria-label="Back to Settings">← Back to Settings</button>
+    <div class="contact-us-af-card">
+      <div class="contact-us-af-head">
+        <div class="contact-us-af-icon" aria-hidden="true">☎</div>
+        <div>
+          <p class="contact-us-af-kicker">Support Request</p>
+          <h2>Request a Call or Email Reply</h2>
+          <p>Share your details and our team will contact you regarding your query.</p>
+        </div>
+      </div>
+      <form id="contactUsFormAf" class="contact-us-af-form" onsubmit="submitContactRequestAf(event)">
+        <div class="contact-field-af">
+          <label for="contactNameAf">Full Name</label>
+          <input id="contactNameAf" name="name" type="text" inputmode="text" autocomplete="name" placeholder="Enter your full name" maxlength="80" required />
+        </div>
+        <div class="contact-field-af">
+          <label for="contactMobileAf">Mobile Number</label>
+          <input id="contactMobileAf" name="mobile" type="tel" inputmode="tel" autocomplete="tel" placeholder="Enter your mobile number" maxlength="15" required />
+        </div>
+        <div class="contact-field-af">
+          <label for="contactEmailAf">Email Address</label>
+          <input id="contactEmailAf" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Enter your email address" maxlength="120" required />
+        </div>
+        <div class="contact-field-af">
+          <label for="contactReasonAf">Reason for Contact</label>
+          <select id="contactReasonAf" name="reason" required>
+            <option value="">Select a reason</option>
+            <option value="Course Access Issue">Course Access Issue</option>
+            <option value="Login or Student ID Issue">Login or Student ID Issue</option>
+            <option value="Payment or Enrollment Query">Payment or Enrollment Query</option>
+            <option value="Technical Problem">Technical Problem</option>
+            <option value="General Support">General Support</option>
+          </select>
+        </div>
+        <div class="contact-field-af">
+          <label for="contactProblemAf">Describe Your Problem</label>
+          <textarea id="contactProblemAf" name="problem" rows="5" placeholder="Write your issue clearly so our team can help you faster." maxlength="1200" required></textarea>
+        </div>
+        <div id="contactUsMessageAf" class="contact-message-af" aria-live="polite"></div>
+        <button id="contactSubmitBtnAf" type="submit" class="contact-submit-btn-af">Submit Request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT REQUEST STATUS -->
+<section id="contactRequestStatusAf" class="af-settings-section" aria-label="Contact Request Status">
   <div class="request-status-page-af">
     <div class="request-status-hero-af">
-      <button
-        type="button"
-        class="request-status-back-af"
-        onclick="showSection('settings')"
-        aria-label="Back to settings"
-      >
-        ← Back
-      </button>
-
+      <button type="button" class="request-status-back-af" onclick="afSettingsClose('contactRequestStatusAf')" aria-label="Back to settings">← Back</button>
       <div class="request-status-hero-text-af">
         <p>Support Center</p>
         <h2>Contact Status</h2>
         <span>Track your contact requests and replies.</span>
       </div>
-
-      <button
-        type="button"
-        class="request-status-refresh-af"
-        onclick="loadContactRequestStatusAf(true)"
-        aria-label="Refresh contact request status"
-      >
-        ↻
-      </button>
+      <button type="button" class="request-status-refresh-af" onclick="loadContactRequestStatusAf(true)" aria-label="Refresh contact request status">↻</button>
     </div>
-
-    <div id="contactRequestStatusMessageAf" class="request-status-message-af">
-      Loading your contact requests...
-    </div>
-
+    <div id="contactRequestStatusMessageAf" class="request-status-message-af">Loading your contact requests...</div>
     <div id="contactRequestStatusListAf" class="request-status-list-af"></div>
   </div>
 </section>
 
-       <!-- ==============================
- REview page
-================================ -->
-  <section id="afReviewPageV1" class="section">
+<!-- BUG REPORT -->
+<section id="bugReport" class="af-settings-section" aria-label="Report a Bug">
+  <div class="af-settings-section-page">
+    <button type="button" class="af-settings-section-back" onclick="afSettingsClose('bugReport')" aria-label="Back to settings">← Back</button>
+    <div class="af-settings-section-hero">
+      <div class="af-settings-section-hero-icon">🐞</div>
+      <h2>Report a Bug</h2>
+      <p>Tell us what went wrong so we can fix it.</p>
+    </div>
+    <div id="bugReportContent" class="af-settings-section-body">
+      <form id="bugReportFormAf" class="contact-us-af-form" onsubmit="submitBugReportAf(event)">
+        <div class="contact-field-af">
+          <label for="bugCategoryAf">Bug Category</label>
+          <select id="bugCategoryAf" name="category" required>
+            <option value="">Select category</option>
+            <option value="Login Issue">Login Issue</option>
+            <option value="Course Access">Course Access</option>
+            <option value="Video Not Playing">Video Not Playing</option>
+            <option value="Payment Issue">Payment Issue</option>
+            <option value="UI / Design Bug">UI / Design Bug</option>
+            <option value="Community Issue">Community Issue</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="contact-field-af">
+          <label for="bugPriorityAf">Priority</label>
+          <select id="bugPriorityAf" name="priority" required>
+            <option value="">Select priority</option>
+            <option value="low">Low</option>
+            <option value="normal" selected>Normal</option>
+            <option value="high">High</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+        <div class="contact-field-af">
+          <label for="bugDescriptionAf">Describe the Bug</label>
+          <textarea id="bugDescriptionAf" name="description" rows="5" placeholder="Describe what went wrong clearly." maxlength="1200" required></textarea>
+        </div>
+        <div class="contact-field-af">
+          <label for="bugStepsAf">Steps to Reproduce</label>
+          <textarea id="bugStepsAf" name="steps_to_reproduce" rows="4" placeholder="What did you do before the bug appeared?" maxlength="800"></textarea>
+        </div>
+        <div id="bugReportMessageAf" class="contact-message-af" aria-live="polite"></div>
+        <button id="bugReportSubmitBtnAf" type="submit" class="contact-submit-btn-af">Submit Bug Report</button>
+      </form>
+    </div>
+  </div>
+</section>
 
-  <div class="panel glass">
+<!-- BUG REPORT STATUS -->
+<section id="requestStatusAf" class="af-settings-section" aria-label="Request Status">
+  <div class="request-status-page-af">
+    <div class="request-status-hero-af">
+      <button type="button" class="request-status-back-af" onclick="afSettingsClose('requestStatusAf')" aria-label="Back to settings">← Back</button>
+      <div class="request-status-hero-text-af">
+        <p>Support Center</p>
+        <h2>Request Status</h2>
+        <span>Track your bug reports and support requests.</span>
+      </div>
+      <button type="button" class="request-status-refresh-af" onclick="loadRequestStatusAf(true)" aria-label="Refresh request status">↻</button>
+    </div>
+    <div id="requestStatusMessageAf" class="request-status-message-af">Loading your requests...</div>
+    <div id="requestStatusListAf" class="request-status-list-af"></div>
+  </div>
+</section>
 
-    <button
-      class="back-mini"
-      onclick="showSection('settings')"
-    >
-      ← Back
-    </button>
-
-    <h2>Latest Test Review</h2>
-
-    <div id="afReviewContentV1">
-
+<!-- LATEST TEST REVIEW -->
+<section id="afReviewPageV1" class="af-settings-section" aria-label="Latest Test Review">
+  <div class="af-settings-section-page">
+    <button type="button" class="af-settings-section-back" onclick="afSettingsClose('afReviewPageV1')" aria-label="Back to settings">← Back</button>
+    <div class="af-settings-section-hero">
+      <div class="af-settings-section-hero-icon">📖</div>
+      <h2>Latest Test Review</h2>
+    </div>
+    <div id="afReviewContentV1" class="af-settings-section-body">
       <div class="af-test-empty-card-v1">
         <div class="af-test-empty-icon-v1">📖</div>
         <h3>Loading Review...</h3>
         <p>Please wait.</p>
       </div>
-
     </div>
-
   </div>
+</section>
 
+<!-- TEST ARENA (placeholder — opens Coming Soon) -->
+<section id="testArena" class="af-settings-section" aria-label="AF Test Arena">
+  <div class="af-settings-section-page">
+    <button type="button" class="af-settings-section-back" onclick="afSettingsClose('testArena')" aria-label="Back to settings">← Back</button>
+    <div class="af-settings-section-hero">
+      <div class="af-settings-section-hero-icon">🧪</div>
+      <h2>AF Test Arena</h2>
+      <p>Quizzes, ranks &amp; national leaderboard.</p>
+    </div>
+    <div class="af-settings-section-body">
+      <div class="af-settings-section-empty">
+        <div class="af-settings-section-empty-icon">🚧</div>
+        <p>AF Test Arena is coming soon.</p>
+        <small>Stay tuned for quizzes and national rankings.</small>
+      </div>
+    </div>
+  </div>
 </section>
     
     <!-- ==============================
@@ -5889,248 +7003,7 @@ body{
     </p>
   </div>
 </div>
-<!-- ==============================
-     REQUEST STATUS PAGE - AF
-================================ -->
 
-<section id="requestStatusAf" class="section request-status-section-af" aria-label="Request Status">
-  <div class="request-status-page-af">
-    <div class="request-status-hero-af">
-      <button
-        type="button"
-        class="request-status-back-af"
-        onclick="showSection('settings')"
-        aria-label="Back to settings"
-      >
-        ← Back
-      </button>
-
-      <div class="request-status-hero-text-af">
-        <p>Support Center</p>
-        <h2>Request Status</h2>
-        <span>Track your bug reports and support requests.</span>
-      </div>
-
-      <button
-        type="button"
-        class="request-status-refresh-af"
-        onclick="loadRequestStatusAf(true)"
-        aria-label="Refresh request status"
-      >
-        ↻
-      </button>
-    </div>
-
-    <div id="requestStatusMessageAf" class="request-status-message-af">
-      Loading your requests...
-    </div>
-
-    <div id="requestStatusListAf" class="request-status-list-af"></div>
-  </div>
-</section>
-<!-- ==============================
-     CONTACT US SECTION - AF
-================================ -->
-
-<section id="contactUsAf" class="section app-section contact-us-af-section" aria-label="Contact Us">
-  <div class="contact-us-af-page">
-    <button
-      type="button"
-      class="contact-back-btn-af"
-      onclick="backToSettingsFromContact()"
-      aria-label="Back to Settings"
-    >
-      ← Back to Settings
-    </button>
-
-    <div class="contact-us-af-card">
-      <div class="contact-us-af-head">
-        <div class="contact-us-af-icon" aria-hidden="true">☎</div>
-
-        <div>
-          <p class="contact-us-af-kicker">Support Request</p>
-          <h2>Request a Call or Email Reply</h2>
-          <p>
-            Share your details and our team will contact you regarding your query.
-          </p>
-        </div>
-      </div>
-
-      <form id="contactUsFormAf" class="contact-us-af-form" onsubmit="submitContactRequestAf(event)">
-        <div class="contact-field-af">
-          <label for="contactNameAf">Full Name</label>
-          <input
-            id="contactNameAf"
-            name="name"
-            type="text"
-            inputmode="text"
-            autocomplete="name"
-            placeholder="Enter your full name"
-            maxlength="80"
-            required
-          />
-        </div>
-
-        <div class="contact-field-af">
-          <label for="contactMobileAf">Mobile Number</label>
-          <input
-            id="contactMobileAf"
-            name="mobile"
-            type="tel"
-            inputmode="tel"
-            autocomplete="tel"
-            placeholder="Enter your mobile number"
-            maxlength="15"
-            required
-          />
-        </div>
-
-        <div class="contact-field-af">
-          <label for="contactEmailAf">Email Address</label>
-          <input
-            id="contactEmailAf"
-            name="email"
-            type="email"
-            inputmode="email"
-            autocomplete="email"
-            placeholder="Enter your email address"
-            maxlength="120"
-            required
-          />
-        </div>
-
-        <div class="contact-field-af">
-          <label for="contactReasonAf">Reason for Contact</label>
-          <select id="contactReasonAf" name="reason" required>
-            <option value="">Select a reason</option>
-            <option value="Course Access Issue">Course Access Issue</option>
-            <option value="Login or Student ID Issue">Login or Student ID Issue</option>
-            <option value="Payment or Enrollment Query">Payment or Enrollment Query</option>
-            <option value="Technical Problem">Technical Problem</option>
-            <option value="General Support">General Support</option>
-          </select>
-        </div>
-
-        <div class="contact-field-af">
-          <label for="contactProblemAf">Describe Your Problem</label>
-          <textarea
-            id="contactProblemAf"
-            name="problem"
-            rows="5"
-            placeholder="Write your issue clearly so our team can help you faster."
-            maxlength="1200"
-            required
-          ></textarea>
-        </div>
-
-        <div id="contactUsMessageAf" class="contact-message-af" aria-live="polite"></div>
-
-        <button id="contactSubmitBtnAf" type="submit" class="contact-submit-btn-af">
-          Submit Request
-        </button>
-      </form>
-    </div>
-  </div>
-</section>
-    <!-- Learning Heatmap -->
-    
-  <section id="learningHeatmap" class="section learning-heatmap-section" aria-label="Learning Heatmap">
-  <div class="learning-heatmap-page">
-
-    <button
-      type="button"
-      class="learning-back-btn"
-      onclick="showSection('settings')"
-      aria-label="Back to settings"
-    >
-      <span aria-hidden="true">←</span>
-      <span>Back to Settings</span>
-    </button>
-
-    <div class="learning-heatmap-hero">
-      <div>
-        <p class="learning-heatmap-kicker">Weekly Online Activity</p>
-        <h2>Learning Heatmap</h2>
-        <p>
-          Login daily and stay active to maintain your learning streak.
-        </p>
-      </div>
-
-      <div class="learning-streak-card">
-        <span class="learning-streak-fire" aria-hidden="true">🔥</span>
-        <strong id="learningHeatmapStreakCount">0</strong>
-        <small>Day Streak</small>
-      </div>
-    </div>
-
-    <div class="learning-week-card">
-      <div class="learning-week-card-top">
-        <div>
-          <h3>This Week</h3>
-          <p id="learningHeatmapStatus">Checking activity...</p>
-        </div>
-
-        <button
-          type="button"
-          class="learning-refresh-btn"
-          onclick="loadLearningHeatmap()"
-          aria-label="Refresh learning heatmap"
-        >
-          ↻
-        </button>
-      </div>
-
-      <div class="learning-week-grid" id="learningWeekGrid">
-        <div class="learning-day-box">
-          <span>Mon</span>
-          <strong>-</strong>
-        </div>
-
-        <div class="learning-day-box">
-          <span>Tue</span>
-          <strong>-</strong>
-        </div>
-
-        <div class="learning-day-box">
-          <span>Wed</span>
-          <strong>-</strong>
-        </div>
-
-        <div class="learning-day-box">
-          <span>Thu</span>
-          <strong>-</strong>
-        </div>
-
-        <div class="learning-day-box">
-          <span>Fri</span>
-          <strong>-</strong>
-        </div>
-
-        <div class="learning-day-box">
-          <span>Sat</span>
-          <strong>-</strong>
-        </div>
-
-        <div class="learning-day-box">
-          <span>Sun</span>
-          <strong>-</strong>
-        </div>
-      </div>
-    </div>
-
-    <div class="learning-info-card">
-      <h3>How streak works</h3>
-
-      <ul>
-        <li>Login daily to keep your learning streak active.</li>
-        <li>Daily activity automatically marks your day as active.</li>
-        <li>Continuous daily learning increases your streak count.</li>
-        <li>If a day is missed, the streak starts again from zero.</li>
-      </ul>
-    </div>
-
-  </div>
-</section>
       
       <!-- VIEW: STUDENT DASHBOARD -->
 <div class="af-view" id="viewDashboard" aria-label="Student Dashboard">
@@ -10262,573 +11135,476 @@ async function loadRequestStatusAf(forceRefresh) {
 })();
 
  
-/* =========================================================
-   CONTACT REQUEST STATUS PAGE - AF
-   Paste at VERY END before </body>
-========================================================= */
+/* ══════════════════════════════════════════════════════
+   SETTINGS MODULE — Unified Navigation System
+══════════════════════════════════════════════════════ */
 
-const AF_CONTACT_REQUEST_STATUS_EDGE_URL =
-  "https://afooyyydhlwngzssgqih.supabase.co/functions/v1/contact-request-status-af";
+/* ── SETTINGS SECTION REGISTRY ──
+   Maps logical keys to section element IDs.
+   Add new settings sub-pages here only.
+─────────────────────────────────────────────────────── */
+const AF_SETTINGS_SECTIONS = {
+  learningHeatmap:          'learningHeatmap',
+  notifications:            'notifications',
+  contactUsAf:              'contactUsAf',
+  contactRequestStatusAf:   'contactRequestStatusAf',
+  bugReport:                'bugReport',
+  requestStatusAf:          'requestStatusAf',
+  afReviewPageV1:           'afReviewPageV1',
+  testArena:                'testArena',
+};
 
-function afContactStatusById(id) {
-  return document.getElementById(id);
+let _afSettingsCurrentSection = null;
+
+/* ── OPEN a settings sub-section ── */
+function afSettingsOpen(key) {
+  const id = AF_SETTINGS_SECTIONS[key];
+  if (!id) {
+    console.warn('afSettingsOpen: unknown section key:', key);
+    return;
+  }
+  const el = document.getElementById(id);
+  if (!el) {
+    console.warn('afSettingsOpen: element not found for id:', id);
+    return;
+  }
+
+  /* Close any currently open section first */
+  if (_afSettingsCurrentSection && _afSettingsCurrentSection !== el) {
+    _afSettingsCurrentSection.classList.remove('af-settings-section-open');
+  }
+
+  el.classList.add('af-settings-section-open');
+  el.scrollTop = 0;
+  _afSettingsCurrentSection = el;
+
+  /* Trigger data loads per section */
+  _afSettingsSectionDidOpen(key);
 }
 
-function openContactRequestStatusPageAf() {
+/* ── CLOSE a settings sub-section ── */
+function afSettingsClose(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.remove('af-settings-section-open');
+  }
+  if (_afSettingsCurrentSection === el) {
+    _afSettingsCurrentSection = null;
+  }
+}
+
+/* ── CLOSE all settings sub-sections (e.g. on tab switch) ── */
+function afSettingsCloseAll() {
+  Object.values(AF_SETTINGS_SECTIONS).forEach(function (id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('af-settings-section-open');
+  });
+  _afSettingsCurrentSection = null;
+}
+
+/* ── DATA LOAD HOOKS per section ── */
+function _afSettingsSectionDidOpen(key) {
+  switch (key) {
+    case 'learningHeatmap':
+      if (typeof loadLearningHeatmap === 'function') loadLearningHeatmap();
+      break;
+    case 'contactRequestStatusAf':
+      if (typeof loadContactRequestStatusAf === 'function') loadContactRequestStatusAf(false);
+      break;
+    case 'requestStatusAf':
+      if (typeof loadRequestStatusAf === 'function') loadRequestStatusAf(false);
+      break;
+    case 'notifications':
+      _afLoadNotifications();
+      break;
+    case 'afReviewPageV1':
+      _afLoadTestReview();
+      break;
+    default:
+      break;
+  }
+}
+
+/* ── TOPBAR SHORTCUTS ── */
+/* Streak pill → Learning Heatmap */
+function afTopbarOpenHeatmap() {
+  /* Switch to settings view first so back button works correctly */
+  afSwitchMainView('settings');
+  setTimeout(function () { afSettingsOpen('learningHeatmap'); }, 60);
+}
+
+/* Notification bell → Notifications */
+function afTopbarOpenNotifications() {
+  afSwitchMainView('settings');
+  setTimeout(function () { afSettingsOpen('notifications'); }, 60);
+}
+
+/* ── MAIN VIEW SWITCHER (bottom nav) ──
+   Replaces the fragmented afSwitchView used across the app.
+   This is the single source of truth for bottom-nav switching.
+─────────────────────────────────────────────────────── */
+const AF_MAIN_VIEWS = {
+  home:      { view: 'viewHome',      nav: 'navHome'      },
+  student:   { view: 'viewStudent',   nav: 'navStudent'   },
+  batches:   { view: 'viewBatches',   nav: 'navBatches'   },
+  community: { view: 'viewCommunity', nav: 'navCommunity' },
+  settings:  { view: 'viewSettings',  nav: 'navSettings'  },
+  dashboard: { view: 'viewDashboard', nav: null           },
+};
+
+let _afMainCurrentView = 'home';
+
+function afSwitchMainView(viewKey) {
+  if (!AF_MAIN_VIEWS[viewKey]) return;
+
+  /* Close any open settings sub-section when switching tabs */
+  afSettingsCloseAll();
+
+  const prevConf = AF_MAIN_VIEWS[_afMainCurrentView];
+  if (prevConf) {
+    const prevView = document.getElementById(prevConf.view);
+    const prevNav  = document.getElementById(prevConf.nav);
+    if (prevView) prevView.classList.remove('active');
+    if (prevNav)  prevNav.classList.remove('active');
+  }
+
+  const conf    = AF_MAIN_VIEWS[viewKey];
+  const newView = document.getElementById(conf.view);
+  const newNav  = document.getElementById(conf.nav);
+  if (newView) newView.classList.add('active');
+  if (newNav)  newNav.classList.add('active');
+
+  _afMainCurrentView = viewKey;
+
+  const page = document.getElementById('afPage');
+  if (page) page.scrollTop = 0;
+
+  sessionStorage.setItem('af_last_tab', viewKey);
+}
+
+/* Restore last visited tab on app load */
+function afRestoreLastTab() {
+  const lastTab = sessionStorage.getItem('af_last_tab') || 'home';
+  const safe = AF_MAIN_VIEWS[lastTab] ? lastTab : 'home';
+  afSwitchMainView(safe);
+}
+
+/* ── BACK BUTTON: hardware / gesture ── */
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  if (_afSettingsCurrentSection) {
+    _afSettingsCurrentSection.classList.remove('af-settings-section-open');
+    _afSettingsCurrentSection = null;
+    return;
+  }
+  if (typeof afCloseModal === 'function') afCloseModal();
+});
+
+/* ── NIGHT MODE ── */
+function afToggleDarkMode(checked) {
+  document.documentElement.setAttribute('data-theme', checked ? 'dark' : 'light');
+  localStorage.setItem('af_dark_mode', checked ? '1' : '0');
+  afShowToast(checked ? '🌙 Night mode on' : '☀️ Night mode off', 'info', 'Theme');
+}
+
+function afInitTheme() {
+  const isDark = localStorage.getItem('af_dark_mode') === '1';
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  const toggle = document.getElementById('nightModeToggle');
+  if (toggle) toggle.checked = isDark;
+}
+
+/* ── LANGUAGE BADGE SYNC ── */
+const _AF_LANG_NAMES = {
+  en: 'English', hi: 'हिन्दी', bho: 'भोजपुरी', bn: 'বাংলা',
+  mr: 'मराठी',  te: 'తెలుగు', ta: 'தமிழ்',   gu: 'ગુજરાતી',
+  ur: 'اردو',  kn: 'ಕನ್ನಡ',
+};
+
+function afUpdateLangBadge() {
+  const code  = localStorage.getItem('af_lang_code') || 'en';
+  const name  = _AF_LANG_NAMES[code] || 'English';
+  const badge = document.getElementById('currentLangBadge');
+  if (badge) badge.textContent = name;
+}
+
+/* ── SETTINGS PROFILE SYNC ── */
+function afSyncSettingsProfile() {
+  const name = localStorage.getItem('af_student_name') || '';
+  const el   = document.getElementById('settingsProfileName');
+  if (el) el.textContent = name ? 'Hi, ' + name : 'Hi, Student';
+}
+
+/* ── NOTIFICATIONS LOADER ── */
+function _afLoadNotifications() {
+  const box = document.getElementById('notificationsContent');
+  if (!box) return;
+  /* Placeholder — connect to real notification source when available */
+  box.innerHTML =
+    '<div class="af-settings-section-empty">' +
+    '<div class="af-settings-section-empty-icon">🔔</div>' +
+    '<p>No new notifications at this time.</p>' +
+    '<small>Check back later for updates on your batches and lectures.</small>' +
+    '</div>';
+}
+
+/* ── TEST REVIEW LOADER ── */
+function _afLoadTestReview() {
+  const box = document.getElementById('afReviewContentV1');
+  if (!box) return;
+  /* Placeholder — connect to real review source when available */
+  box.innerHTML =
+    '<div class="af-test-empty-card-v1">' +
+    '<div class="af-test-empty-icon-v1">📖</div>' +
+    '<h3>No Review Available</h3>' +
+    '<p>Your latest test review will appear here after your next test.</p>' +
+    '</div>';
+}
+
+/* ── LEARNING HEATMAP ── */
+function loadLearningHeatmap() {
+  const streakEl   = document.getElementById('learningHeatmapStreakCount');
+  const statusEl   = document.getElementById('learningHeatmapStatus');
+  const gridEl     = document.getElementById('learningWeekGrid');
+
+  const streak = parseInt(localStorage.getItem('af_streak') || '0', 10);
+  if (streakEl) streakEl.textContent = streak;
+
+  /* Build week grid from stored activity */
+  const days    = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const today   = new Date();
+  const dayOfWeek = (today.getDay() + 6) % 7; /* Mon=0 … Sun=6 */
+
+  const activeDays = _afGetActiveWeekDays();
+
+  if (statusEl) {
+    statusEl.textContent = streak > 0
+      ? '🔥 ' + streak + '-day streak active'
+      : 'Start learning to build your streak!';
+  }
+
+  if (gridEl) {
+    gridEl.innerHTML = days.map(function (d, i) {
+      const isActive  = activeDays.includes(i);
+      const isToday   = i === dayOfWeek;
+      const cls       = 'learning-day-box' + (isActive ? ' active' : '') + (isToday ? ' today' : '');
+      const icon      = isActive ? '🔥' : (isToday ? '📍' : '-');
+      return '<div class="' + cls + '"><span>' + d + '</span><strong>' + icon + '</strong></div>';
+    }).join('');
+  }
+}
+
+function _afGetActiveWeekDays() {
   try {
-    if (typeof showSection === "function") {
-      showSection("contactRequestStatusAf");
-    } else {
-      document.querySelectorAll(".section").forEach(function (section) {
-        section.classList.remove("active");
-        section.style.display = "none";
-      });
-
-      const page = afContactStatusById("contactRequestStatusAf");
-      if (page) {
-        page.classList.add("active");
-        page.style.display = "block";
-      }
-    }
-
-    window.setTimeout(function () {
-      loadContactRequestStatusAf(false);
-    }, 80);
-  } catch (error) {
-    console.error("openContactRequestStatusPageAf failed:", error);
+    const raw = localStorage.getItem('af_activity_days');
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    return [];
   }
 }
 
-function setContactRequestStatusMessageAf(type, message) {
-  try {
-    const box = afContactStatusById("contactRequestStatusMessageAf");
-    if (!box) return;
+/* ── BUG REPORT SUBMIT ── */
+async function submitBugReportAf(event) {
+  event.preventDefault();
 
-    box.classList.remove("is-error", "is-empty");
-    box.style.display = message ? "block" : "none";
-    box.textContent = message || "";
+  const btn     = document.getElementById('bugReportSubmitBtnAf');
+  const msgEl   = document.getElementById('bugReportMessageAf');
 
-    if (type === "error") box.classList.add("is-error");
-    if (type === "empty") box.classList.add("is-empty");
-  } catch (error) {
-    console.error("setContactRequestStatusMessageAf failed:", error);
-  }
-}
+  const category = (document.getElementById('bugCategoryAf')?.value    || '').trim();
+  const priority = (document.getElementById('bugPriorityAf')?.value    || '').trim();
+  const desc     = (document.getElementById('bugDescriptionAf')?.value || '').trim();
+  const steps    = (document.getElementById('bugStepsAf')?.value       || '').trim();
 
-function getAfCurrentStudentForContactStatus() {
-  const keys = [
-    "af_current_student",
-    "af_logged_student",
-    "af_student_session",
-    "af_student_data",
-    "studentaf_session",
-    "student_session_af",
-    "currentStudentaf",
-    "current_student_af",
-    "af_user",
-    "af_auth_user",
-    "sb-afooyyydhlwngzssgqih-auth-token"
-  ];
-
-  for (let i = 0; i < keys.length; i += 1) {
-    try {
-      const raw = localStorage.getItem(keys[i]);
-      if (!raw) continue;
-
-      const parsed = JSON.parse(raw);
-      if (!parsed || typeof parsed !== "object") continue;
-
-      const student =
-        parsed.student ||
-        parsed.data ||
-        parsed.user ||
-        parsed.currentUser ||
-        parsed.current_student ||
-        parsed.session?.user ||
-        parsed;
-
-      if (student && typeof student === "object") {
-        const email =
-          student.email ||
-          student.contact_email ||
-          student.registered_email ||
-          student.student_email ||
-          student.user_email ||
-          parsed.email ||
-          parsed.contact_email ||
-          parsed.registered_email ||
-          parsed.student_email ||
-          "";
-
-        if (email) {
-          return {
-            ...student,
-            email: String(email).trim().toLowerCase()
-          };
-        }
-      }
-    } catch (error) {}
+  function setMsg(text, type) {
+    if (!msgEl) return;
+    msgEl.className = 'contact-message-af ' + (type || '');
+    msgEl.textContent = text;
   }
 
-  const fallbackEmail =
-    localStorage.getItem("af_student_email") ||
-    localStorage.getItem("student_email_af") ||
-    localStorage.getItem("studentEmailaf") ||
-    localStorage.getItem("contact_email") ||
-    localStorage.getItem("registered_email") ||
-    "";
+  if (!category) { setMsg('Please select a bug category.', 'error'); return; }
+  if (!desc || desc.length < 10) { setMsg('Please describe the bug (min. 10 characters).', 'error'); return; }
 
-  return {
-    email: String(fallbackEmail || "").trim().toLowerCase()
-  };
-}
-
-function normalizeContactRequestFlagAf(value) {
-  const normalized = String(value ?? "F").trim().toUpperCase();
-  return (
-    normalized === "T" ||
-    normalized === "TRUE" ||
-    normalized === "YES" ||
-    normalized === "1"
-  );
-}
-
-function formatContactRequestDateAf(value) {
-  try {
-    if (!value) return "Recently submitted";
-
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return "Recently submitted";
-
-    return date.toLocaleString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-  } catch (error) {
-    return "Recently submitted";
-  }
-}
-
-function escapeContactRequestHtmlAf(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function getContactRequestTitleAf(request) {
-  return (
-    request.subject ||
-    request.category ||
-    request.request_type ||
-    "Contact Request"
-  );
-}
-
-function getContactRequestDescriptionAf(request) {
-  return (
-    request.message ||
-    request.description ||
-    request.query ||
-    "Your contact request has been submitted to our team."
-  );
-}
-
-function getContactRequestOverallStatusAf(request) {
-  const isRead = normalizeContactRequestFlagAf(request.team_read);
-  const isSolved = normalizeContactRequestFlagAf(request.request_solved);
-
-  if (isSolved) {
-    return {
-      label: "Resolved",
-      className: "solved"
-    };
-  }
-
-  if (isRead) {
-    return {
-      label: "In Review",
-      className: "read"
-    };
-  }
-
-  return {
-    label: "Pending",
-    className: "pending"
-  };
-}
-
-function renderContactRequestStatusCardAf(request, index) {
-  const isRead = normalizeContactRequestFlagAf(request.team_read);
-  const isSolved = normalizeContactRequestFlagAf(request.request_solved);
-  const status = getContactRequestOverallStatusAf(request);
-
-  const title = escapeContactRequestHtmlAf(
-    request.contact_reason || "Contact Request"
-  );
-
-  const fullDescription = escapeContactRequestHtmlAf(
-    request.problem_description || "No message added."
-  );
-
-  const frontDescription = escapeContactRequestHtmlAf(
-    isSolved
-      ? "Your contact request has been resolved by our team."
-      : isRead
-        ? "Your contact request is being reviewed by our team."
-        : "Your contact request has been submitted and is waiting for team review."
-  );
-
-  const createdAt = escapeContactRequestHtmlAf(
-    formatContactRequestDateAf(request.created_at)
-  );
-
-  const updatedAt = escapeContactRequestHtmlAf(
-    formatContactRequestDateAf(request.updated_at)
-  );
-
-  const name = escapeContactRequestHtmlAf(
-    request.full_name || request.student_name || "Student"
-  );
-
-  const email = escapeContactRequestHtmlAf(request.email || "");
-
-  const phone = escapeContactRequestHtmlAf(
-    request.mobile_number || "Not added"
-  );
-
-  const statusNote = escapeContactRequestHtmlAf(request.status_note || "");
-  const adminReply = escapeContactRequestHtmlAf(request.admin_notes || "");
-  const requestStatus = escapeContactRequestHtmlAf(request.status || "open");
-
-  const readStepClass = isRead ? "is-done" : "is-pending";
-  const solvedStepClass = isSolved ? "is-done" : "is-pending";
-
-  const readStepIcon = isRead ? "✓" : "!";
-  const solvedStepIcon = isSolved ? "✓" : "!";
-
-  const readStepText = isRead
-    ? "Team has read your contact request."
-    : "Pending — team has not read it yet.";
-
-  const solvedStepText = isSolved
-    ? "Your contact request has been resolved."
-    : "Pending — response is not marked resolved yet.";
-
-  const safeCardId =
-    "contactRequestFlipCardAf_" +
-    String(request.id || index).replace(/[^a-zA-Z0-9_-]/g, "");
-
-  return `
-    <article
-      id="${safeCardId}"
-      class="request-card-af request-flip-card-af contact-request-flip-card-af"
-      style="animation-delay:${index * 70}ms"
-      tabindex="0"
-      role="button"
-      aria-label="Tap to flip contact request card"
-      onclick="toggleContactRequestFlipCardAf('${safeCardId}')"
-      onkeydown="handleContactRequestFlipCardKeyAf(event, '${safeCardId}')"
-    >
-      <div class="request-flip-inner-af">
-        <div class="request-flip-face-af request-flip-front-af">
-          <div class="request-card-top-af">
-            <div class="request-card-title-af">
-              <div class="request-card-kicker-af">
-                <span>${requestStatus}</span>
-                <span>contact</span>
-              </div>
-
-              <h3>${title}</h3>
-
-              <p class="request-front-summary-af">${frontDescription}</p>
-
-              <p class="request-date-af">Submitted: ${createdAt}</p>
-            </div>
-
-            <span class="request-status-pill-af ${status.className}">
-              ${status.label}
-            </span>
-          </div>
-
-          <div class="request-progress-af">
-            <div class="request-step-af is-done">
-              <div class="request-step-dot-af">✓</div>
-              <div class="request-step-content-af">
-                <strong>Request Sent</strong>
-                <span>Your contact request has been submitted successfully.</span>
-              </div>
-            </div>
-
-            <div class="request-step-af ${readStepClass}">
-              <div class="request-step-dot-af">${readStepIcon}</div>
-              <div class="request-step-content-af">
-                <strong>Team Read Your Request</strong>
-                <span>${readStepText}</span>
-              </div>
-            </div>
-
-            <div class="request-step-af ${solvedStepClass}">
-              <div class="request-step-dot-af">${solvedStepIcon}</div>
-              <div class="request-step-content-af">
-                <strong>Resolved Your Request</strong>
-                <span>${solvedStepText}</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="request-flip-hint-af">
-            <span>Tap to view full contact request</span>
-            <b>↻</b>
-          </div>
-        </div>
-
-        <div class="request-flip-face-af request-flip-back-af">
-          <div class="request-back-head-af">
-            <div>
-              <span>Contact Request</span>
-              <h3>${title}</h3>
-            </div>
-
-            <button
-              type="button"
-              class="request-back-close-af"
-              aria-label="Back to status"
-              onclick="event.stopPropagation(); toggleContactRequestFlipCardAf('${safeCardId}')"
-            >
-              ↩
-            </button>
-          </div>
-
-          <div class="request-back-scroll-af">
-            <div class="request-back-block-af">
-              <strong>Message</strong>
-              <p>${fullDescription}</p>
-            </div>
-
-            <div class="request-back-grid-af">
-              <div class="request-back-block-af">
-                <strong>Name</strong>
-                <p>${name}</p>
-              </div>
-
-              <div class="request-back-block-af">
-                <strong>Email</strong>
-                <p>${email}</p>
-              </div>
-
-              <div class="request-back-block-af">
-                <strong>Phone</strong>
-                <p>${phone}</p>
-              </div>
-
-              <div class="request-back-block-af">
-                <strong>Last Updated</strong>
-                <p>${updatedAt}</p>
-              </div>
-            </div>
-
-            ${
-              statusNote
-                ? `
-                  <div class="request-back-block-af request-back-note-af">
-                    <strong>Status Note</strong>
-                    <p>${statusNote}</p>
-                  </div>
-                `
-                : ""
-            }
-
-            ${
-              adminReply
-                ? `
-                  <div class="request-back-block-af request-back-note-af">
-                    <strong>Admin Reply</strong>
-                    <p>${adminReply}</p>
-                  </div>
-                `
-                : ""
-            }
-          </div>
-
-          <div class="request-flip-hint-af request-flip-hint-back-af">
-            <span>Tap to return to status</span>
-            <b>↩</b>
-          </div>
-        </div>
-      </div>
-    </article>
-  `;
-}
-  
-function toggleContactRequestFlipCardAf(cardId) {
-  try {
-    const card = document.getElementById(cardId);
-    if (!card) return;
-
-    card.classList.toggle("is-flipped");
-
-    const isFlipped = card.classList.contains("is-flipped");
-    card.setAttribute(
-      "aria-label",
-      isFlipped
-        ? "Tap to return to contact request status"
-        : "Tap to view full contact request"
-    );
-  } catch (error) {
-    console.error("toggleContactRequestFlipCardAf failed:", error);
-  }
-}
-
-function handleContactRequestFlipCardKeyAf(event, cardId) {
-  try {
-    const key = event.key || event.code;
-
-    if (key === "Enter" || key === " " || key === "Spacebar") {
-      event.preventDefault();
-      toggleContactRequestFlipCardAf(cardId);
-    }
-  } catch (error) {
-    console.error("handleContactRequestFlipCardKeyAf failed:", error);
-  }
-}
-
-async function loadContactRequestStatusAf(forceRefresh) {
-  const list = afContactStatusById("contactRequestStatusListAf");
+  if (btn) btn.disabled = true;
+  setMsg('Submitting your report...', '');
 
   try {
-    if (list) list.innerHTML = "";
-
-    setContactRequestStatusMessageAf(
-      "",
-      forceRefresh
-        ? "Refreshing contact request status..."
-        : "Loading your contact requests..."
-    );
-
-    const student = getAfCurrentStudentForContactStatus();
-
-    const email = String(
-      student.email ||
-      student.contact_email ||
-      student.registered_email ||
-      student.student_email ||
-      ""
-    )
-      .trim()
-      .toLowerCase();
-
-    if (!email) {
-      setContactRequestStatusMessageAf(
-        "error",
-        "Login first to view your contact request status."
-      );
-      console.warn("No email found for contact request status.", student);
-      return;
-    }
+    const email  = localStorage.getItem('af_student_email')  || '';
+    const name   = localStorage.getItem('af_student_name')   || '';
+    const mobile = localStorage.getItem('af_student_mobile') || '';
+    const uuid   = localStorage.getItem('af_student_uuid')   || '';
 
     const payload = {
-      contact_email: email,
-      registered_email: email,
-      student_email: email,
-      email: email
+      reporter_email:     email,
+      reporter_name:      name,
+      reporter_mobile:    mobile,
+      student_uuid:       uuid,
+      category:           category,
+      priority:           priority,
+      description:        desc,
+      steps_to_reproduce: steps,
+      active_section:     _afMainCurrentView || 'settings',
+      page_url:           location.href,
+      user_agent:         navigator.userAgent,
     };
 
-    console.log("contact-request-status-af payload:", payload);
+    const backend = (typeof studentDb !== 'undefined') ? studentDb : null;
+    if (!backend) throw new Error('Unable to connect to server.');
 
-    const headers = {
-      "Content-Type": "application/json"
-    };
+    const { data, error } = await backend.functions.invoke('bug-report-af', { body: payload });
 
-    if (typeof SUPABASE_ANON_KEY !== "undefined" && SUPABASE_ANON_KEY) {
-      headers.apikey = SUPABASE_ANON_KEY;
-      headers.Authorization = "Bearer " + SUPABASE_ANON_KEY;
+    if (error || !data || !data.ok) {
+      throw new Error((data && data.message) || 'Submission failed. Please try again.');
     }
 
-    const response = await fetch(AF_CONTACT_REQUEST_STATUS_EDGE_URL, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(payload)
-    });
+    setMsg('✓ Bug report submitted successfully. Thank you!', 'success');
+    document.getElementById('bugReportFormAf')?.reset();
 
-    const responseText = await response.text();
-
-    let result = null;
-
-    try {
-      result = responseText ? JSON.parse(responseText) : null;
-    } catch (error) {
-      console.error("Invalid JSON from contact-request-status-af:", responseText);
-      throw new Error("Server returned invalid response.");
-    }
-
-    console.log("contact-request-status-af response:", {
-      status: response.status,
-      ok: response.ok,
-      result
-    });
-
-    if (!response.ok || !result || result.success !== true) {
-      throw new Error(
-        result && result.message
-          ? result.message
-          : "Unable to load contact request status right now."
-      );
-    }
-
-    const requests = Array.isArray(result.requests)
-      ? result.requests
-      : Array.isArray(result.reports)
-        ? result.reports
-        : [];
-
-    if (!requests.length) {
-      setContactRequestStatusMessageAf(
-        "empty",
-        "No contact request found. Your contact requests will appear here after submission."
-      );
-      return;
-    }
-
-    setContactRequestStatusMessageAf("", "");
-
-    if (list) {
-      list.innerHTML = requests
-        .map(function (request, index) {
-          return renderContactRequestStatusCardAf(request, index);
-        })
-        .join("");
-    }
-
-    window.setTimeout(function () {
-      try {
-        const firstPending = document.querySelector(
-          "#contactRequestStatusAf .request-step-af.is-pending"
-        );
-
-        if (firstPending) {
-          firstPending.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-        }
-      } catch (error) {}
-    }, 450);
-  } catch (error) {
-    console.error("loadContactRequestStatusAf failed:", error);
-
-    setContactRequestStatusMessageAf(
-      "error",
-      error && error.message
-        ? error.message
-        : "Something went wrong. Please try again."
-    );
+  } catch (err) {
+    setMsg(err.message || 'Submission failed. Please try again.', 'error');
+  } finally {
+    if (btn) btn.disabled = false;
   }
+}
+
+/* ── CONTACT REQUEST SUBMIT ── */
+async function submitContactRequestAf(event) {
+  event.preventDefault();
+
+  const btn   = document.getElementById('contactSubmitBtnAf');
+  const msgEl = document.getElementById('contactUsMessageAf');
+
+  const name   = (document.getElementById('contactNameAf')?.value    || '').trim();
+  const mobile = (document.getElementById('contactMobileAf')?.value  || '').trim();
+  const email  = (document.getElementById('contactEmailAf')?.value   || '').trim();
+  const reason = (document.getElementById('contactReasonAf')?.value  || '').trim();
+  const problem= (document.getElementById('contactProblemAf')?.value || '').trim();
+
+  function setMsg(text, type) {
+    if (!msgEl) return;
+    msgEl.className = 'contact-message-af ' + (type || '');
+    msgEl.textContent = text;
+  }
+
+  if (!name   || name.length < 2)   { setMsg('Please enter your full name.', 'error'); return; }
+  if (!mobile || mobile.length < 7) { setMsg('Please enter a valid mobile number.', 'error'); return; }
+  if (!email  || !email.includes('@')) { setMsg('Please enter a valid email address.', 'error'); return; }
+  if (!reason) { setMsg('Please select a reason for contact.', 'error'); return; }
+  if (!problem || problem.length < 10) { setMsg('Please describe your problem (min. 10 characters).', 'error'); return; }
+
+  if (btn) btn.disabled = true;
+  setMsg('Submitting your request...', '');
+
+  try {
+    const backend = (typeof studentDb !== 'undefined') ? studentDb : null;
+    if (!backend) throw new Error('Unable to connect to server.');
+
+    const payload = {
+      full_name:           name,
+      mobile_number:       mobile,
+      email:               email,
+      contact_reason:      reason,
+      problem_description: problem,
+      student_uuid:        localStorage.getItem('af_student_uuid') || '',
+      page_url:            location.href,
+      user_agent:          navigator.userAgent,
+    };
+
+    const { data, error } = await backend.functions.invoke('contact-request-af', { body: payload });
+
+    if (error || !data || !data.ok) {
+      throw new Error((data && data.message) || 'Submission failed. Please try again.');
+    }
+
+    setMsg('✓ Your contact request has been submitted. We will reach out soon!', 'success');
+    document.getElementById('contactUsFormAf')?.reset();
+
+  } catch (err) {
+    setMsg(err.message || 'Submission failed. Please try again.', 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+/* ── ACCORDION ── */
+function afToggleAccordion(triggerBtn) {
+  const group = triggerBtn.closest('.af-accordion-group');
+  if (!group) return;
+  const isOpen = group.classList.contains('open');
+  document.querySelectorAll('.af-accordion-group.open').forEach(function (g) {
+    if (g !== group) {
+      g.classList.remove('open');
+      const t = g.querySelector('.af-accordion-trigger');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    }
+  });
+  group.classList.toggle('open', !isOpen);
+  triggerBtn.setAttribute('aria-expanded', String(!isOpen));
+}
+
+/* ── WIRE TOPBAR BUTTONS ──
+   Called once from app init.
+─────────────────────────────────────────────────────── */
+function afInitSettingsTopbar() {
+  const streakBtn = document.querySelector('.af-streak-pill');
+  const notifBtn  = document.querySelector('.af-notif-btn');
+
+  if (streakBtn) {
+    streakBtn.onclick = function () { afTopbarOpenHeatmap(); };
+  }
+  if (notifBtn) {
+    notifBtn.onclick  = function () { afTopbarOpenNotifications(); };
+  }
+}
+
+/* ── NAV BUTTONS ──
+   Wire bottom nav to afSwitchMainView.
+─────────────────────────────────────────────────────── */
+function afInitBottomNav() {
+  const map = {
+    navHome:      'home',
+    navStudent:   'student',
+    navBatches:   'batches',
+    navCommunity: 'community',
+    navSettings:  'settings',
+  };
+  Object.keys(map).forEach(function (btnId) {
+    const el = document.getElementById(btnId);
+    if (el) el.onclick = function () { afSwitchMainView(map[btnId]); };
+  });
+}
+
+/* ── SETTINGS MODULE INIT ── */
+function afInitSettings() {
+  afInitTheme();
+  afUpdateLangBadge();
+  afSyncSettingsProfile();
+  afInitSettingsTopbar();
+  afInitBottomNav();
+  afRestoreLastTab();
+  document.documentElement.classList.remove('af-preload');
+}
+
+/* ── EXPOSE GLOBALS REQUIRED BY INLINE HTML HANDLERS ── */
+window.afSettingsOpen             = afSettingsOpen;
+window.afSettingsClose            = afSettingsClose;
+window.afSwitchMainView           = afSwitchMainView;
+window.afToggleDarkMode           = afToggleDarkMode;
+window.afToggleAccordion          = afToggleAccordion;
+window.afUpdateLangBadge          = afUpdateLangBadge;
+window.afSyncSettingsProfile      = afSyncSettingsProfile;
+window.loadLearningHeatmap        = loadLearningHeatmap;
+window.submitBugReportAf          = submitBugReportAf;
+window.submitContactRequestAf     = submitContactRequestAf;
+window.afTopbarOpenHeatmap        = afTopbarOpenHeatmap;
+window.afTopbarOpenNotifications  = afTopbarOpenNotifications;
+
+/* ── BOOT ── */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', afInitSettings);
+} else {
+  afInitSettings();
 }
   </script>
 

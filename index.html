@@ -4746,25 +4746,27 @@ body{
       </div>
 
       <div class="af-topbar-actions">
-        <button
-          class="af-streak-pill"
-          onclick="window.location.href='/learning-heatmap/'"
-          aria-label="Open learning streak"
-          type="button"
-        >
-          <span class="af-streak-fire" aria-hidden="true">🔥</span>
-          <span id="afHeaderStreakCount">0</span>
-        </button>
 
-        <button
-          class="af-notif-btn"
-          onclick="window.location.href='/notifications/'"
-          aria-label="Open notifications"
-          type="button"
-        >
-          🔔
-        </button>
-      </div>
+  <button
+    class="af-streak-pill"
+    onclick="afSwitchView('heatmap')"
+    aria-label="Open learning streak"
+    type="button"
+  >
+    <span class="af-streak-fire" aria-hidden="true">🔥</span>
+    <span id="afHeaderStreakCount">0</span>
+  </button>
+
+  <button
+    class="af-notif-btn"
+    onclick="afSwitchView('notifications')"
+    aria-label="Open notifications"
+    type="button"
+  >
+    🔔
+  </button>
+
+</div>
     </header>
 
     <!-- SCROLLABLE PAGE AREA -->

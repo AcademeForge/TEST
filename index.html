@@ -4688,8 +4688,6 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
 /* Faster dark mode paint */
 [data-theme="dark"]{
   color-scheme: dark;
@@ -4701,6 +4699,124 @@ body{
 
     html.af-preload .af-view{
   display:none !important;
+}
+
+ /* ═══════════════════════════════════════════════════════════════
+   SECTION SLIDE-UP SYSTEM — ChatGPT style, neeche se upar
+   ═══════════════════════════════════════════════════════════════ */
+ 
+/* ── Base: all sections hidden by default ── */
+.section {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg-base);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+ 
+  /* Start state: neeche chhupi hui */
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+ 
+  /* Transition: fast, spring feel, lag nahi */
+  transition:
+    transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity   220ms cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0ms linear 320ms;
+ 
+  will-change: transform, opacity;
+}
+ 
+/* ── Active: section upar aa jaaye ── */
+.section.active {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+ 
+  transition:
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity   240ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0ms linear 0ms;
+}
+ 
+/* ── Leaving: wapas neeche jaaye ── */
+.section.leaving {
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+ 
+  transition:
+    transform 280ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity   200ms cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0ms linear 280ms;
+}
+ 
+/* ═══════════════════════════════════════════════════════════════
+   SPECIFIC SECTION SCROLL CONTAINERS
+   ═══════════════════════════════════════════════════════════════ */
+ 
+/* Contact Request Status */
+.contact-request-status-section-af,
+.request-status-section-af,
+.contact-us-af-section,
+.learning-heatmap-section {
+  padding-bottom: calc(var(--nav-h) + 16px);
+}
+ 
+/* ═══════════════════════════════════════════════════════════════
+   LANGUAGE MODAL — Alag hai, overlay ke saath
+   ═══════════════════════════════════════════════════════════════ */
+ 
+.af-lang-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--bg-overlay);
+ 
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+ 
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+ 
+  transition:
+    opacity   280ms cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0ms linear 280ms;
+}
+ 
+.af-lang-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+ 
+  transition:
+    opacity   320ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0ms linear 0ms;
+}
+ 
+.af-lang-modal {
+  width: 100%;
+  max-width: var(--shell-max);
+  background: var(--bg-card-solid);
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: 12px 20px 32px;
+  box-shadow: var(--shadow-elevated);
+ 
+  transform: translateY(100%);
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+ 
+.af-lang-overlay.open .af-lang-modal {
+  transform: translateY(0);
 }
     
   </style>
@@ -5299,7 +5415,7 @@ body{
   </div>
 </div>
 
-    <!-- VIEW: SETTINGS -->
+  <!-- VIEW: SETTINGS -->
 <div class="af-view" id="viewSettings" aria-label="Settings">
   <div class="af-settings-page">
 
@@ -5351,7 +5467,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('testArena'); return false;" aria-label="Open AF Test Arena">
+          <a class="af-accordion-item" href="#" onclick="showSection('testArena'); return false;" aria-label="Open AF Test Arena">
             <div class="af-accordion-item-icon" aria-hidden="true">🧪</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">AF Test Arena</div>
@@ -5359,7 +5475,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('testReview'); return false;" aria-label="Open Latest Test Review">
+          <a class="af-accordion-item" href="#" onclick="showSection('afReviewPageV1'); return false;" aria-label="Open Latest Test Review">
             <div class="af-accordion-item-icon" aria-hidden="true">📖</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Latest Test Review</div>
@@ -5383,7 +5499,7 @@ body{
           <a
             class="af-accordion-item"
             href="#"
-            onclick="afSwitchView('student'); return false;"
+            onclick="showSection('student'); return false;"
             aria-label="Login or Create Student ID"
           >
             <div class="af-accordion-item-icon" aria-hidden="true">📋</div>
@@ -5422,7 +5538,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('heatmap'); return false;" aria-label="Open Learning Heatmap">
+          <a class="af-accordion-item" href="#" onclick="showSection('learningHeatmap'); return false;" aria-label="Open Learning Heatmap">
             <div class="af-accordion-item-icon" aria-hidden="true">🔥</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Learning Heatmap</div>
@@ -5464,7 +5580,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('notifications'); return false;" aria-label="View Notifications">
+          <a class="af-accordion-item" href="#" onclick="showSection('notifications'); return false;" aria-label="View Notifications">
             <div class="af-accordion-item-icon" aria-hidden="true">🔔</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Notifications</div>
@@ -5485,7 +5601,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('contact'); return false;" aria-label="Contact Us">
+          <a class="af-accordion-item" href="#" onclick="showSection('contactUsAf'); return false;" aria-label="Contact Us">
             <div class="af-accordion-item-icon" aria-hidden="true">☎</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Contact Us</div>
@@ -5493,7 +5609,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('contactStatus'); return false;" aria-label="Contact Request Status">
+          <a class="af-accordion-item" href="#" onclick="showSection('contactRequestStatusAf'); return false;" aria-label="Contact Request Status">
             <div class="af-accordion-item-icon" aria-hidden="true">📞</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Contact Request Status</div>
@@ -5514,7 +5630,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('bugReport'); return false;" aria-label="Report a Bug">
+          <a class="af-accordion-item" href="#" onclick="showSection('bugReport'); return false;" aria-label="Report a Bug">
             <div class="af-accordion-item-icon" aria-hidden="true">🐞</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Report a Bug</div>
@@ -5522,7 +5638,7 @@ body{
             </div>
             <span class="af-accordion-item-arrow" aria-hidden="true">›</span>
           </a>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('bugStatus'); return false;" aria-label="Bug Report Status">
+          <a class="af-accordion-item" href="#" onclick="showSection('requestStatusAf'); return false;" aria-label="Bug Report Status">
             <div class="af-accordion-item-icon" aria-hidden="true">📌</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Bug Report Status</div>
@@ -5564,7 +5680,7 @@ body{
         </button>
         <div class="af-accordion-body" role="region">
           <div class="af-accordion-divider"></div>
-          <a class="af-accordion-item" href="#" onclick="afSwitchView('language'); return false;" aria-label="Change App Language">
+          <a class="af-accordion-item" href="#" onclick="openAFTranslationModal(); return false;" aria-label="Change App Language">
             <div class="af-accordion-item-icon" aria-hidden="true">🌐</div>
             <div class="af-accordion-item-text">
               <div class="af-accordion-item-label">Change Language</div>
@@ -5595,139 +5711,427 @@ body{
   </div>
 </div><!-- /viewSettings -->
 
-<!-- ══════════════════════════════════════════════════════
-     VIEW: LEARNING HEATMAP
-     ══════════════════════════════════════════════════════ -->
-<div class="af-view" id="viewHeatmap" aria-label="Learning Heatmap">
-  <div class="af-placeholder-section">
-    <div class="af-placeholder-icon">🔥</div>
-    <div class="af-placeholder-title">Learning Heatmap</div>
-    <p class="af-placeholder-sub">
-      Track daily study activity, streaks, consistency and learning progress.
-    </p>
+<!-- ==============================
+     CONTACT REQUEST STATUS PAGE - AF
+================================ -->
+
+<section
+  id="contactRequestStatusAf"
+  class="section request-status-section-af contact-request-status-section-af"
+  aria-label="Contact Request Status"
+>
+  <div class="request-status-page-af">
+    <div class="request-status-hero-af">
+      <button
+        type="button"
+        class="request-status-back-af"
+        onclick="showSection('settings')"
+        aria-label="Back to settings"
+      >
+        ← Back
+      </button>
+
+      <div class="request-status-hero-text-af">
+        <p>Support Center</p>
+        <h2>Contact Status</h2>
+        <span>Track your contact requests and replies.</span>
+      </div>
+
+      <button
+        type="button"
+        class="request-status-refresh-af"
+        onclick="loadContactRequestStatusAf(true)"
+        aria-label="Refresh contact request status"
+      >
+        ↻
+      </button>
+    </div>
+
+    <div id="contactRequestStatusMessageAf" class="request-status-message-af">
+      Loading your contact requests...
+    </div>
+
+    <div id="contactRequestStatusListAf" class="request-status-list-af"></div>
+  </div>
+</section>
+
+       <!-- ==============================
+ REview page
+================================ -->
+  <section id="afReviewPageV1" class="section">
+
+  <div class="panel glass">
+
     <button
-      class="af-placeholder-btn"
-      onclick="afSwitchView('settings')"
-      type="button">
-      Back to Settings
+      class="back-mini"
+      onclick="showSection('settings')"
+    >
+      ← Back
     </button>
+
+    <h2>Latest Test Review</h2>
+
+    <div id="afReviewContentV1">
+
+      <div class="af-test-empty-card-v1">
+        <div class="af-test-empty-icon-v1">📖</div>
+        <h3>Loading Review...</h3>
+        <p>Please wait.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+    
+    <!-- ==============================
+  LANGUAGE AF
+================================ -->
+
+<div
+  id="afTranslationOverlay"
+  class="af-lang-overlay"
+  aria-hidden="true"
+  onclick="closeAFTranslationModal()"
+>
+  <div
+    class="af-lang-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="afTranslationTitle"
+    onclick="event.stopPropagation()"
+  >
+    <div class="af-lang-drag-handle" aria-hidden="true"></div>
+
+    <div class="af-lang-modal-head">
+      <div class="af-lang-head-copy">
+        <p class="af-lang-kicker">AcademeForge</p>
+        <h3 id="afTranslationTitle" class="af-lang-heading" data-i18n="Choose Language">
+          Choose Language
+        </h3>
+      </div>
+
+      <button
+        type="button"
+        class="af-lang-close"
+        onclick="closeAFTranslationModal()"
+        aria-label="Close language selector"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="af-lang-grid" role="listbox" aria-label="Available languages">
+      <button type="button" class="af-lang-option active" data-lang="en" onclick="setAFAppLanguage('en')" role="option" aria-selected="true">
+        <span class="af-lang-option-icon" aria-hidden="true">🇬🇧</span>
+        <strong class="af-lang-option-name">English</strong>
+        <small class="af-lang-option-meta">Default</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="hi" onclick="setAFAppLanguage('hi')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">हिन्दी</strong>
+        <small class="af-lang-option-meta">Hindi</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="bho" onclick="setAFAppLanguage('bho')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">भोजपुरी</strong>
+        <small class="af-lang-option-meta">Bhojpuri</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="bn" onclick="setAFAppLanguage('bn')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">বাংলা</strong>
+        <small class="af-lang-option-meta">Bengali</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="mr" onclick="setAFAppLanguage('mr')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">मराठी</strong>
+        <small class="af-lang-option-meta">Marathi</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="te" onclick="setAFAppLanguage('te')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">తెలుగు</strong>
+        <small class="af-lang-option-meta">Telugu</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="ta" onclick="setAFAppLanguage('ta')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">தமிழ்</strong>
+        <small class="af-lang-option-meta">Tamil</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="gu" onclick="setAFAppLanguage('gu')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">ગુજરાતી</strong>
+        <small class="af-lang-option-meta">Gujarati</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="ur" onclick="setAFAppLanguage('ur')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">اردو</strong>
+        <small class="af-lang-option-meta">Urdu</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="kn" onclick="setAFAppLanguage('kn')" role="option" aria-selected="false">
+        <span class="af-lang-option-icon" aria-hidden="true">🇮🇳</span>
+        <strong class="af-lang-option-name">ಕನ್ನಡ</strong>
+        <small class="af-lang-option-meta">Kannada</small>
+      </button>
+    </div>
+
+    <p id="afTranslationStatus" class="af-lang-status">
+      Select a language to update the app instantly.
+    </p>
   </div>
 </div>
+<!-- ==============================
+     REQUEST STATUS PAGE - AF
+================================ -->
 
-<!-- ══════════════════════════════════════════════════════
-     VIEW: NOTIFICATIONS
-     ══════════════════════════════════════════════════════ -->
-<div class="af-view" id="viewNotifications" aria-label="Notifications">
-  <div class="af-placeholder-section">
-    <div class="af-placeholder-icon">🔔</div>
-    <div class="af-placeholder-title">Notifications</div>
-    <p class="af-placeholder-sub">
-      Batch updates, lecture alerts, announcements and important notices.
-    </p>
-    <button
-      class="af-placeholder-btn"
-      onclick="afSwitchView('settings')"
-      type="button">
-      Back to Settings
-    </button>
+<section id="requestStatusAf" class="section request-status-section-af" aria-label="Request Status">
+  <div class="request-status-page-af">
+    <div class="request-status-hero-af">
+      <button
+        type="button"
+        class="request-status-back-af"
+        onclick="showSection('settings')"
+        aria-label="Back to settings"
+      >
+        ← Back
+      </button>
+
+      <div class="request-status-hero-text-af">
+        <p>Support Center</p>
+        <h2>Request Status</h2>
+        <span>Track your bug reports and support requests.</span>
+      </div>
+
+      <button
+        type="button"
+        class="request-status-refresh-af"
+        onclick="loadRequestStatusAf(true)"
+        aria-label="Refresh request status"
+      >
+        ↻
+      </button>
+    </div>
+
+    <div id="requestStatusMessageAf" class="request-status-message-af">
+      Loading your requests...
+    </div>
+
+    <div id="requestStatusListAf" class="request-status-list-af"></div>
   </div>
-</div>
+</section>
+<!-- ==============================
+     CONTACT US SECTION - AF
+================================ -->
 
-<!-- ══════════════════════════════════════════════════════
-     VIEW: CONTACT US
-     ══════════════════════════════════════════════════════ -->
-<div class="af-view" id="viewContact" aria-label="Contact Us">
-  <div class="af-placeholder-section">
-    <div class="af-placeholder-icon">☎️</div>
-    <div class="af-placeholder-title">Contact Us</div>
-    <p class="af-placeholder-sub">
-      Submit support requests, feedback and call-back requests.
-    </p>
+<section id="contactUsAf" class="section app-section contact-us-af-section" aria-label="Contact Us">
+  <div class="contact-us-af-page">
     <button
-      class="af-placeholder-btn"
-      onclick="afSwitchView('settings')"
-      type="button">
-      Back to Settings
+      type="button"
+      class="contact-back-btn-af"
+      onclick="backToSettingsFromContact()"
+      aria-label="Back to Settings"
+    >
+      ← Back to Settings
     </button>
-  </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════
-     VIEW: CONTACT STATUS
-     ══════════════════════════════════════════════════════ -->
-<div class="af-view" id="viewContactStatus" aria-label="Contact Status">
-  <div class="af-placeholder-section">
-    <div class="af-placeholder-icon">📞</div>
-    <div class="af-placeholder-title">Contact Request Status</div>
-    <p class="af-placeholder-sub">
-      Track the progress of your submitted support requests.
-    </p>
+    <div class="contact-us-af-card">
+      <div class="contact-us-af-head">
+        <div class="contact-us-af-icon" aria-hidden="true">☎</div>
+
+        <div>
+          <p class="contact-us-af-kicker">Support Request</p>
+          <h2>Request a Call or Email Reply</h2>
+          <p>
+            Share your details and our team will contact you regarding your query.
+          </p>
+        </div>
+      </div>
+
+      <form id="contactUsFormAf" class="contact-us-af-form" onsubmit="submitContactRequestAf(event)">
+        <div class="contact-field-af">
+          <label for="contactNameAf">Full Name</label>
+          <input
+            id="contactNameAf"
+            name="name"
+            type="text"
+            inputmode="text"
+            autocomplete="name"
+            placeholder="Enter your full name"
+            maxlength="80"
+            required
+          />
+        </div>
+
+        <div class="contact-field-af">
+          <label for="contactMobileAf">Mobile Number</label>
+          <input
+            id="contactMobileAf"
+            name="mobile"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="Enter your mobile number"
+            maxlength="15"
+            required
+          />
+        </div>
+
+        <div class="contact-field-af">
+          <label for="contactEmailAf">Email Address</label>
+          <input
+            id="contactEmailAf"
+            name="email"
+            type="email"
+            inputmode="email"
+            autocomplete="email"
+            placeholder="Enter your email address"
+            maxlength="120"
+            required
+          />
+        </div>
+
+        <div class="contact-field-af">
+          <label for="contactReasonAf">Reason for Contact</label>
+          <select id="contactReasonAf" name="reason" required>
+            <option value="">Select a reason</option>
+            <option value="Course Access Issue">Course Access Issue</option>
+            <option value="Login or Student ID Issue">Login or Student ID Issue</option>
+            <option value="Payment or Enrollment Query">Payment or Enrollment Query</option>
+            <option value="Technical Problem">Technical Problem</option>
+            <option value="General Support">General Support</option>
+          </select>
+        </div>
+
+        <div class="contact-field-af">
+          <label for="contactProblemAf">Describe Your Problem</label>
+          <textarea
+            id="contactProblemAf"
+            name="problem"
+            rows="5"
+            placeholder="Write your issue clearly so our team can help you faster."
+            maxlength="1200"
+            required
+          ></textarea>
+        </div>
+
+        <div id="contactUsMessageAf" class="contact-message-af" aria-live="polite"></div>
+
+        <button id="contactSubmitBtnAf" type="submit" class="contact-submit-btn-af">
+          Submit Request
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+    <!-- Learning Heatmap -->
+    
+  <section id="learningHeatmap" class="section learning-heatmap-section" aria-label="Learning Heatmap">
+  <div class="learning-heatmap-page">
+
     <button
-      class="af-placeholder-btn"
-      onclick="afSwitchView('settings')"
-      type="button">
-      Back to Settings
+      type="button"
+      class="learning-back-btn"
+      onclick="showSection('settings')"
+      aria-label="Back to settings"
+    >
+      <span aria-hidden="true">←</span>
+      <span>Back to Settings</span>
     </button>
-  </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════
-     VIEW: BUG REPORT
-     ══════════════════════════════════════════════════════ -->
-<div class="af-view" id="viewBugReport" aria-label="Bug Report">
-  <div class="af-placeholder-section">
-    <div class="af-placeholder-icon">🐞</div>
-    <div class="af-placeholder-title">Report a Bug</div>
-    <p class="af-placeholder-sub">
-      Found an issue? Report bugs and help improve AcademeForge.
-    </p>
-    <button
-      class="af-placeholder-btn"
-      onclick="afSwitchView('settings')"
-      type="button">
-      Back to Settings
-    </button>
-  </div>
-</div>
+    <div class="learning-heatmap-hero">
+      <div>
+        <p class="learning-heatmap-kicker">Weekly Online Activity</p>
+        <h2>Learning Heatmap</h2>
+        <p>
+          Login daily and stay active to maintain your learning streak.
+        </p>
+      </div>
 
-<!-- ══════════════════════════════════════════════════════
-     VIEW: BUG STATUS
-     ══════════════════════════════════════════════════════ -->
-<div class="af-view" id="viewBugStatus" aria-label="Bug Status">
-  <div class="af-placeholder-section">
-    <div class="af-placeholder-icon">📌</div>
-    <div class="af-placeholder-title">Bug Report Status</div>
-    <p class="af-placeholder-sub">
-      Track submitted bug reports and resolution progress.
-    </p>
-    <button
-      class="af-placeholder-btn"
-      onclick="afSwitchView('settings')"
-      type="button">
-      Back to Settings
-    </button>
-  </div>
-</div>
+      <div class="learning-streak-card">
+        <span class="learning-streak-fire" aria-hidden="true">🔥</span>
+        <strong id="learningHeatmapStreakCount">0</strong>
+        <small>Day Streak</small>
+      </div>
+    </div>
 
-<!-- ══════════════════════════════════════════════════════
-     VIEW: LANGUAGE
-     ══════════════════════════════════════════════════════ -->
-<div class="af-view" id="viewLanguage" aria-label="Language">
-  <div class="af-placeholder-section">
-    <div class="af-placeholder-icon">🌐</div>
-    <div class="af-placeholder-title">Language Settings</div>
-    <p class="af-placeholder-sub">
-      Choose your preferred language for the AcademeForge app.
-    </p>
-    <button
-      class="af-placeholder-btn"
-      onclick="afSwitchView('settings')"
-      type="button">
-      Back to Settings
-    </button>
-  </div>
-</div>
+    <div class="learning-week-card">
+      <div class="learning-week-card-top">
+        <div>
+          <h3>This Week</h3>
+          <p id="learningHeatmapStatus">Checking activity...</p>
+        </div>
 
+        <button
+          type="button"
+          class="learning-refresh-btn"
+          onclick="loadLearningHeatmap()"
+          aria-label="Refresh learning heatmap"
+        >
+          ↻
+        </button>
+      </div>
+
+      <div class="learning-week-grid" id="learningWeekGrid">
+        <div class="learning-day-box">
+          <span>Mon</span>
+          <strong>-</strong>
+        </div>
+
+        <div class="learning-day-box">
+          <span>Tue</span>
+          <strong>-</strong>
+        </div>
+
+        <div class="learning-day-box">
+          <span>Wed</span>
+          <strong>-</strong>
+        </div>
+
+        <div class="learning-day-box">
+          <span>Thu</span>
+          <strong>-</strong>
+        </div>
+
+        <div class="learning-day-box">
+          <span>Fri</span>
+          <strong>-</strong>
+        </div>
+
+        <div class="learning-day-box">
+          <span>Sat</span>
+          <strong>-</strong>
+        </div>
+
+        <div class="learning-day-box">
+          <span>Sun</span>
+          <strong>-</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-info-card">
+      <h3>How streak works</h3>
+
+      <ul>
+        <li>Login daily to keep your learning streak active.</li>
+        <li>Daily activity automatically marks your day as active.</li>
+        <li>Continuous daily learning increases your streak count.</li>
+        <li>If a day is missed, the streak starts again from zero.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+      
       <!-- VIEW: STUDENT DASHBOARD -->
 <div class="af-view" id="viewDashboard" aria-label="Student Dashboard">
   <div class="af-dashboard-page" id="afDashPage">
@@ -6403,32 +6807,34 @@ function afHandleSwipe(e) {
     window.afShowComingSoon = afShowComingSoon;
     window.afCloseModal     = afCloseModal;
 
-   /* ─────────────────────────────────────────────────────────────
-   VIEW SWITCHING SYSTEM
-────────────────────────────────────────────────────────────── */
+ function afSwitchView(viewName) {
 
-function afSwitchView(viewName) {
+  const mapping = {
+    heatmap: 'learningHeatmap',
+    contact: 'contactUsAf',
+    contactStatus: 'contactRequestStatusAf',
+    bugStatus: 'requestStatusAf',
+    testReview: 'afReviewPageV1'
+  };
 
-  // Sabhi views hide karo
+  if (mapping[viewName]) {
+    showSection(mapping[viewName]);
+    return;
+  }
+
+  const targetId =
+    'view' + viewName.charAt(0).toUpperCase() + viewName.slice(1);
+
   document.querySelectorAll('.af-view').forEach(view => {
     view.style.display = 'none';
   });
-
-  // Target view id banao
-  const targetId =
-    'view' + viewName.charAt(0).toUpperCase() + viewName.slice(1);
 
   const targetView = document.getElementById(targetId);
 
   if (targetView) {
     targetView.style.display = 'block';
-    window.scrollTo(0, 0);
-  } else {
-    console.error('View not found:', targetId);
   }
 }
-
-window.afSwitchView = afSwitchView;
     /* ─────────────────────────────────────────────────────────────
        SECTION 12: KEYBOARD & ACCESSIBILITY
     ─────────────────────────────────────────────────────────────── */
